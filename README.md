@@ -1,5 +1,22 @@
 # SOLVE-IT
 
+
+
+## Branching Convention
+We follow a branching convention to manage our codebase effectively. The convention is as follows:
+
+- `main`: The main branch that represents the production-ready code.
+- `dev`: The development branch where new features are integrated and tested.
+- `feature/your-feature`: Branches  for developing new features. ex: `feature/leaderboard-points`
+- `bugfix/your-bugfix`: Branches  for fixing bugs. ex: `bugfix/upload-file`
+- `conf/your-conf`: Branches  for conficurations . `conf/django-chanels`
+
+<!-- - `hotfix/your-hotfix`: Branches created for critical bug fixes in the production code. These branches are created from the `main` branch and merged back into it once the hotfix is complete. -->
+
+When creating a new branch, make sure to give it a descriptive name that reflects the purpose of the branch. For example, if you are working on a feature to add user authentication, you can create a branch named `feature/user-authentication`.
+
+It is important to follow this branching convention to ensure a smooth and organized development process. By using separate branches for different features and bug fixes, we can easily track changes, collaborate effectively, and maintain a stable codebase.
+
 <!-- ## Description
 SOLVE-IT is a project aimed at solving complex problems using innovative solutions. This repository contains the source code and documentation for the project.
 
