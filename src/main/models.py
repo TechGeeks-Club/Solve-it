@@ -1,5 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.utils import timezone
+import os
 
 
 #DB_digrame: https://drawsql.app/teams/django-34/diagrams/db
@@ -12,36 +14,56 @@ class Team(models.Model):
     
     def __str__(self) -> str:
         return self.name
+
+
+class QuestionLevel(models.Model):
+    level = models.CharField(max_length=20)
+    def __str__(self) -> str:
+        return self.level
     
-class Quetions(models.Model):
-    question = models.TextField()
-    pointes  = models.IntegerField()
-    template = models.TextField() #contains the path of the template
+    
+class Question(models.Model):
+    question_title = models.CharField(max_length=255,db_default="No Title")
+    question_text  = models.TextField()
+    points         = models.IntegerField(db_default=0)
+    template       = models.TextField() #contains the path of the template
+    date           = models.DateTimeField(default = timezone.now)    
+    level          = models.ForeignKey(QuestionLevel,on_delete=models.CASCADE)
     # test_num = models.GeneratedField(expression, output_field, db_persist=None, **kwargs)
-    level    = models.ManyToManyField("Levels", through="Question_level") 
-
-    def __str__(self) -> str:
-        return self.question
-
-class Levels(models.Model):
-    name = models.CharField(max_length=254)
-    def __str__(self) -> str:
-        return self.name
     
-class Tests(models.Model):
-    inp     = models.TextField()
-    exp_res = models.TextField()
-    Qid   = models.ForeignKey(Quetions,on_delete=models.CASCADE)
+    def __str__(self) -> str:
+        return f'{self.id} - {self.level} - {self.question_title}'
+
     
-class Responses(models.Model):
-    Qid       = models.ForeignKey(Quetions,on_delete=models.CASCADE)#Quetion_id
-    Tid       = models.ForeignKey(Team,on_delete=models.CASCADE)    #Team_id
-    file_path = models.TextField()
+class Test(models.Model):
+    question = models.ForeignKey(Question, on_delete=models.CASCADE)
+    input    = models.TextField()
+    output   = models.TextField()
+    def __str__(self):
+        return f'{self.id} - {self.question} - [ {self.input} ]'
+    
+    
+
+def upload_answer_to(instance, filename):
+    return  os.path.join('responses',instance.team.id,instance.question.id,filename)
+
+class Answer(models.Model):
+    question   = models.ForeignKey(Question,on_delete=models.CASCADE)#Quetion_id
+    team       = models.ForeignKey(Team,on_delete=models.CASCADE)    #Team_id
+    answer     = models.FileField(upload_to=upload_answer_to)
     class Meta:
-        unique_together = [['Qid', 'Tid']]
+        unique_together = [['question', 'team']]
+        
+    def __str__(self) -> str:
+        return f'{self.id} - {self.team} - {self.question}'
 
-class Responce_result(models.Model):
-    Rid     = models.ForeignKey(Responses,on_delete=models.CASCADE)
-    sec_test= models.IntegerField()
-    # points = models.GeneratedField(expression, output_field, db_persist=None, **kwargs)
+
+class AnswerResault(models.Model):
+    answer  = models.ForeignKey(Answer,on_delete=models.CASCADE)
+    success = models.IntegerField() # gen field
+    # faulure = total - success
+    points   = models.IntegerField()
     
+    def __str__(self) -> str:
+        return f'{self.id} - {self.answer} - {self.points}'
+
