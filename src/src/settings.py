@@ -40,7 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     # Apps 
     'CTests',
-    'main',
+    'main.apps.MainConfig',
 
 ]
 
@@ -125,7 +125,7 @@ USE_TZ = True
 STATIC_ROOT =  os.path.join(BASE_DIR,"static")# f'{BASE_DIR}/static' #*
 STATIC_URL = 'static/'
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR,"techgeeks","static"),  #*
+    os.path.join(BASE_DIR,"src","static"),  #*
 ]
 STATIC_URL = 'static/'
 
