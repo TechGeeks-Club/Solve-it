@@ -12,23 +12,26 @@ class TeamForm(forms.ModelForm):
         fields = ['name', 'Pid', 'pin']
     
     
-class QuetionsForm(forms.ModelForm):
+class QuetionForm(forms.ModelForm):
     class Meta:
-        model = models.Quetions
+        model = models.Question
         fields = ['question', 'pointes', 'template', 'level']
 
-
-class LevelsForm(forms.ModelForm):
+class QuestionLevelForm(forms.ModelForm):
     class Meta:
-        model = models.Levels
-        fields = ['name']
+        model = models.QuestionLevel
+        fields = ['level']
         
-class TestsFrom(forms.ModelForm):
+class TestFrom(forms.ModelForm):
     class Meta:
-        model = models.Tests
+        model = models.Test
         fields = ['inp', 'exp_res', 'Qid']
     
-class ResponsesForm(forms.ModelForm):
+class AnswerForm(forms.ModelForm):
+    class Meta:
+        model = models.Answer
+        fields = ['question', 'team', 'answer']
+class AnswerResaultForm(forms.ModelForm):
     class Meta:
         model = models.Responses
         fields = ['Qid', 'Tid', 'file_path']
