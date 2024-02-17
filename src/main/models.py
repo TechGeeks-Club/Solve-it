@@ -6,6 +6,12 @@ import os
 
 # DB_digrame: #? https://drawsql.app/teams/django-34/diagrams/db
 
+class Participant(models.Model):
+    user = models.OneToOneField(User,on_delete=models.CASCADE)
+    team = models.ForeignKey('Team',on_delete=models.CASCADE) #Team_id
+    def __str__(self) -> str:
+        return self.user.username
+
 class Team(models.Model):
     name = models.CharField(max_length=254)
     Pid  = models.ForeignKey(User,on_delete=models.CASCADE) #participent_id

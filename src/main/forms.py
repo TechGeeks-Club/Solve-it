@@ -1,7 +1,10 @@
 from django import forms
 from . import models
 
-
+class Participant(forms.ModelForm):
+    class Meta:
+        model = models.Participant
+        fields = ['user', 'Tid']
 
 class TeamForm(forms.ModelForm):
     class Meta:
