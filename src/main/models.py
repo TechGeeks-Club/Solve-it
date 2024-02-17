@@ -2,7 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 
 
-#DB_digrame: https://drawsql.app/teams/django-34/diagrams/db
+# DB_digrame: #? https://drawsql.app/teams/django-34/diagrams/db
 
 class Team(models.Model):
     name = models.CharField(max_length=254)
