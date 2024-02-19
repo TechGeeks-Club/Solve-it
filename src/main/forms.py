@@ -1,10 +1,19 @@
 from django import forms
 from . import models
+from django.contrib.auth.models import User
 
+
+class UserForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = ['username', 'password']
+        widgets = {
+            'password': forms.PasswordInput(),
+        }
 class Participant(forms.ModelForm):
     class Meta:
         model = models.Participant
-        fields = ['user', 'Tid']
+        fields = ['user', 'team']
 
 class TeamForm(forms.ModelForm):
     class Meta:
@@ -15,7 +24,7 @@ class TeamForm(forms.ModelForm):
 class QuetionForm(forms.ModelForm):
     class Meta:
         model = models.Question
-        fields = ['question', 'pointes', 'template', 'level']
+        fields = ["question_title",'question_text', 'points', 'template', 'level']
 
 class QuestionLevelForm(forms.ModelForm):
     class Meta:
@@ -25,7 +34,7 @@ class QuestionLevelForm(forms.ModelForm):
 class TestFrom(forms.ModelForm):
     class Meta:
         model = models.Test
-        fields = ['inp', 'exp_res', 'Qid']
+        fields = ['input', 'output', 'question']
     
 class AnswerForm(forms.ModelForm):
     class Meta:
@@ -33,6 +42,6 @@ class AnswerForm(forms.ModelForm):
         fields = ['question', 'team', 'answer']
 class AnswerResaultForm(forms.ModelForm):
     class Meta:
-        model = models.Responses
-        fields = ['Qid', 'Tid', 'file_path']
+        model = models.AnswerResault
+        fields = ['answer', 'success', 'points']
 

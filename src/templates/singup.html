@@ -1,0 +1,15 @@
+<html>
+    <head>
+        <title>singup</title>
+        {% comment %} <link rel="stylesheet" type="text/css" href="css/style.css"> {% endcomment %}
+    </head>
+    <body>
+        <div class="header">
+            <form method = "POST">
+                {% csrf_token %}
+                {{ form.as_p }}
+            </form>
+        </div>
+    
+    </body>
+</html>
