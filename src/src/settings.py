@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-0_-tb_#wg=!3q5)5(h1$czq=mp*j4+wmt9&gkj!#i!y-+_yh+p
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [ '192.168.43.80']
 
 INTERNAL_IPS = [
     # ...
@@ -68,7 +68,7 @@ ROOT_URLCONF = 'src.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR,'templates')],
+        'DIRS': [os.path.join(BASE_DIR,"templates")],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -82,7 +82,6 @@ TEMPLATES = [
 ]
 
 
-ASGI_APPLICATION = 'src.asgi.application'
 WSGI_APPLICATION = 'src.wsgi.application'
 
 
@@ -148,3 +147,28 @@ MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+
+# Channels conf
+
+ASGI_APPLICATION = "src.asgi.application"
+
+# ! NOT FOR PEODUCTION
+CHANNEL_LAYERS = {
+    "default": {
+        'BACKEND': 'channels.layers.InMemoryChannelLayer',
+    }
+}
+
+# for production
+# docker run --rm -p 6379:6379 redis:7
+
+# CHANNEL_LAYERS = {
+#     "default": {
+#         "BACKEND": "channels_redis.core.RedisChannelLayer",
+#         "CONFIG": {
+#             "hosts": [("127.0.0.1", 6379)],
+#         },
+#     },
+# }
