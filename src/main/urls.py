@@ -1,8 +1,8 @@
 from django.contrib import admin
 from django.urls import path,include
-from .views import first_page
+from .views import singup_view,login_view
 
 urlpatterns = [
-    # path('singup/', submit_form),
-    path('', first_page),
+    path('login/', login_view),
+    path('singup/', singup_view),
 ]
