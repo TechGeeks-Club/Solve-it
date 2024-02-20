@@ -1,10 +1,19 @@
 from django import forms
 from . import models
+from django.contrib.auth.models import User
 
+
+class UserForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = ['username', 'password']
+        widgets = {
+            'password': forms.PasswordInput(),
+        }
 class Participant(forms.ModelForm):
     class Meta:
         model = models.Participant
-        fields = ['user', 'Tid']
+        fields = ['user', 'team']
 
 class TeamForm(forms.ModelForm):
     class Meta:
@@ -12,24 +21,27 @@ class TeamForm(forms.ModelForm):
         fields = ['name', 'Pid', 'pin']
     
     
-class QuetionsForm(forms.ModelForm):
+class QuetionForm(forms.ModelForm):
     class Meta:
-        model = models.Quetions
-        fields = ['question', 'pointes', 'template', 'level']
+        model = models.Question
+        fields = ["question_title",'question_text', 'points', 'template', 'level']
 
-
-class LevelsForm(forms.ModelForm):
+class QuestionLevelForm(forms.ModelForm):
     class Meta:
-        model = models.Levels
-        fields = ['name']
+        model = models.QuestionLevel
+        fields = ['level']
         
-class TestsFrom(forms.ModelForm):
+class TestFrom(forms.ModelForm):
     class Meta:
-        model = models.Tests
-        fields = ['inp', 'exp_res', 'Qid']
+        model = models.Test
+        fields = ['input', 'output', 'question']
     
-class ResponsesForm(forms.ModelForm):
+class AnswerForm(forms.ModelForm):
     class Meta:
-        model = models.Responses
-        fields = ['Qid', 'Tid', 'file_path']
+        model = models.Answer
+        fields = ['question', 'team', 'answer']
+class AnswerResaultForm(forms.ModelForm):
+    class Meta:
+        model = models.AnswerResault
+        fields = ['answer', 'success', 'points']
 
