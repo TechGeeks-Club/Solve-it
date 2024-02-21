@@ -33,7 +33,7 @@ class Participant(forms.ModelForm):
 class TeamForm(forms.ModelForm):
     class Meta:
         model = models.Team
-        fields = ['name', 'Pid', 'pin']
+        fields = ['name', 'pin']
     
     
 class QuetionForm(forms.ModelForm):
