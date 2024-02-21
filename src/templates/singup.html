@@ -8,15 +8,35 @@
             <form method = "POST">
                 {% csrf_token %}
                 {% comment %} {{ form.as_p }} {% endcomment %}
+                {% if not 'team'  in request.path %}
                 <p>
                     <label for="id_username">Username:</label>
                     <input type="text" name="username" maxlength="150" required="" aria-describedby="id_username_helptext" id="id_username">                        
                 </p>
+                {% else%}
+                <p>
+                    <label for="id_username">team name:</label>
+                    <input type="text" name="name" maxlength="150" required="" aria-describedby="id_username_helptext" id="id_username">                        
+                </p>
+                {% endif %}
+
+                {% if not 'team/create' in request.path %}
                 <p>
                     <label for="id_password">Password:</label>
                     <input type="password" name="password" maxlength="128" required="" id="id_password">                  
                 </p>
-                <button type="submit">Sign up</button>
+                {% endif %}
+                
+                {% if 'login' in request.path %}
+                    <button type="submit">Log in</button>
+                {% elif 'signup' in request.path %}
+                    <button type="submit">Sign up</button>
+                {% elif 'team/create' in request.path %}
+                    <button type="submit">create</button>
+                {% elif 'team/join' in request.path %}
+                    <button type="submit">join</button>
+                {% endif %}
+               
             </form>
         </div>
     

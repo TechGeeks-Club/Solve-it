@@ -13,7 +13,7 @@ def validateName(name) -> bool:
 
 def validatePin(pin): 
     ptt = "^[0-9]{4,6}$" 
-    if re.search(ptt,pin):
+    if re.match(ptt,pin):
         return 1
     return 0
 
