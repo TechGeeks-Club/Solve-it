@@ -9,6 +9,7 @@ We follow a branching convention to manage our codebase effectively. The convent
 - `dev`: The development branch where new features are integrated and tested.
 - `feature/your-feature`: Branches  for developing new features. ex: `feature/leaderboard-points`
 - `bugfix/your-bugfix`: Branches  for fixing bugs. ex: `bugfix/upload-file`
+- `refactor/your-refactor`: : Branches for refactoring existing code to improve readability, maintainability, or performance.Ex:`refactordatabase-optimization`
 - `conf/your-conf`: Branches  for conficurations . `conf/django-chanels`
 
 <!-- - `hotfix/your-hotfix`: Branches created for critical bug fixes in the production code. These branches are created from the `main` branch and merged back into it once the hotfix is complete. -->
