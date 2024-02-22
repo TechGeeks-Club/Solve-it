@@ -24,8 +24,7 @@ from main import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path("__debug__/", include("debug_toolbar.urls")),
-    path('main/', include("main.urls")),
-    path('', views.first_page),
+    path('', include("main.urls")),
 
     path("chat/", include("CTests.urls")),
 

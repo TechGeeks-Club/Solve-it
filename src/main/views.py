@@ -51,44 +51,37 @@ def singup_view(request):
 @login_required
 def create_team(request):
     if request.method == 'GET':
-        try:
-            part = Participant.objects.get(user_id=request.user.id)
-            if part.team:
-                return HttpResponse("<h1>you are already in a team</h1>",status=400)
-        except:
-            pass
+        
+        if Team.objects.filter(participant__user_id=request.user.id).exists():
+            return HttpResponse("<h1>you are already in a team</h1>",status=400)
+
         return render(request, 'singup.html')
         
     if request.method == 'POST':
-        
             
-        if validateName(request.POST['name']):
-            try:
-                team = Team.objects.get(name=request.POST['name'])
-                return HttpResponse("<h1>team already exist</h1>",status=400)
-            except:
-                pass
-            pin = random.randint(1000,999999)
-            team = Team.objects.create(name=request.POST['name'],pin=int(pin))
-            print(f"============={team}======{team.id}==============")
-            user_id = request.user.id
-            print(f"============={user_id}==============")
-            participant = Participant.objects.get(user_id=user_id)
-            print(f"============={participant}==============")
-            participant.team = team
-            participant.save()
+        if not validateName(request.POST['name']):
+            return HttpResponse("<h1>invalid name</h1>",status=400)
+        
+        if Team.objects.filter(name=request.POST['name']).exists(): 
+            return HttpResponse("<h1>pin already exist</h1>",status=400)
+        
+        
+        pin = random.randint(100000,999999)
+        team = Team.objects.create(name=request.POST['name'],pin=str(pin))
+        
+        participant = Participant.objects.get(user_id=request.user.id)
+        participant.team = team
+        participant.save()
         return HttpResponse(f"<h1>team created | your pin is {pin}</h1>",status=201)
     raise  Http404()    
 
 @login_required
 def join_team(request):
     if request.method == 'GET':
-        try:
-            part = Participant.objects.get(user_id=request.user.id)
-            if part.team:
-                return HttpResponse("<h1>you are already in a team</h1>",status=400)
-        except:
-            pass
+        
+        if Team.objects.filter(participant__user_id=request.user.id).exists():
+            return HttpResponse("<h1>you are already in a team</h1>",status=400)
+        
         return render(request, 'singup.html')
     
     if request.method == 'POST':
