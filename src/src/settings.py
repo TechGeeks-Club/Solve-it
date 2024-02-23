@@ -45,8 +45,9 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     "debug_toolbar",
     # Apps 
-    'CTests',
+    'CTests.apps.CtestsConfig',
     'main.apps.MainConfig',
+    'realtime.apps.RealtimeConfig',
 
 ]
 

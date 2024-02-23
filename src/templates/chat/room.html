@@ -19,6 +19,17 @@
             + roomName
             + '/'
         );
+        chatSocket.onopen = (event) => {
+            console.log('WebSocket connection opened:', event);
+        };
+        
+        chatSocket.onmessage = (event) => {
+            console.log('WebSocket message received:', event.data);
+        };
+        
+        chatSocket.onclose = (event) => {
+            console.error('WebSocket connection closed unexpectedly:', event);
+        };
 
         chatSocket.onmessage = function(e) {
             const data = JSON.parse(e.data);

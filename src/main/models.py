@@ -6,6 +6,15 @@ import os
 
 # DB_digrame: #? https://drawsql.app/teams/django-34/diagrams/db
 
+
+# class Competition(models.Model):
+#     name = models.CharField(max_length=254)
+#     start = models.DateTimeField(default = timezone.now)
+#     end = models.DateTimeField(default = timezone.now)
+    
+#     def __str__(self) -> str:
+#         return self.name
+
 class Participant(models.Model):
     user = models.OneToOneField(User,on_delete=models.CASCADE)
     team = models.ForeignKey('Team',on_delete=models.CASCADE,null=True) #Team_id
