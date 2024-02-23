@@ -7,10 +7,17 @@ from django.contrib.auth.decorators import login_required
 
 from .forms import UserForm
 
-from .validation import validateName
+from .validation import validateName,validatePin
 from .models import Team,Participant
 
 import random
+
+def team_members_num(team_id):
+    # team = Team.objects.get(name=request.POST['name'])
+    num  = int(Participant.objects.filter(team_id=team_id).count())
+    print(num)
+    return num
+
 def first_page(request):
     return HttpResponse("<h1>first page </h1>")
 
@@ -35,17 +42,23 @@ def singup_view(request):
         return render(request, 'singup.html', {'form': form})
         
     if request.method == 'POST':
-        form = UserForm(request.POST)
-        if form.is_valid():
-            newUser = User(username=form.data["username"])
-            newUser.set_password(raw_password=form.data["password"])
-            newUser.save()
-            Participant(user=newUser).save()
-            
-            return HttpResponse("<h1>singup success</h1>",status=201)
+        # form = UserForm(request.POST)
+        unv = validateName(request.POST['username'])
+        if not unv :
+            if validatePin(request.POST['password']):
+                newUser = User(username=request.POST['username'])
+                newUser.set_password(raw_password=request.POST['password'])
+                newUser.save()
+                Participant(user=newUser).save()
+
+                return HttpResponse("<h1>singup success</h1>",status=201)
+            else:
+                return HttpResponse("<h1>invalid password</h1>",status=400)
         
-        return HttpResponse("<h1>singup error</h1>",status=400)
-    
+        elif unv == 1:
+            return HttpResponse("<h1>invalid username</h1>",status=400)    
+        elif unv == 2:
+            return HttpResponse("<h1>username already exists</h1>",status=400)  
     raise  Http404()
 
 @login_required
@@ -68,8 +81,8 @@ def create_team(request):
                 return HttpResponse("<h1>team already exist</h1>",status=400)
             except:
                 pass
-            pin = random.randint(1000,999999)
-            team = Team.objects.create(name=request.POST['name'],pin=int(pin))
+            pin = str(random.randint(1000,999999))
+            team = Team.objects.create(name=request.POST['name'],pin=pin)
             user_id = request.user.id
             participant = Participant.objects.get(user_id=user_id)
             participant.team = team
@@ -95,13 +108,15 @@ def join_team(request):
         except:
             return HttpResponse("<h1>team not found</h1>",status=404)
         
-        if team.pin == int(request.POST['password']):
-            
-            user = request.user.id
-            participent = Participant.objects.get(user_id=user)
-            participent.team = team 
-            participent.save()
-            return HttpResponse("<h1>team joined</h1>",status=200)
+        if team.pin == request.POST['password']:    
+            if team_members_num(team.id) < 3:
+                user = request.user.id
+                participent = Participant.objects.get(user_id=user)
+                participent.team = team 
+                participent.save()
+                return HttpResponse("<h1>team joined</h1>",status=200)
+            else:
+                return HttpResponse("<h1>team is full<h1>")
         else:
             return HttpResponse("<h1>a wrong password</h1>",status=400)
     

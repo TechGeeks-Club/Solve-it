@@ -15,7 +15,7 @@ class Participant(models.Model):
 class Team(models.Model):
     name = models.CharField(max_length=254)
     # Pid  = models.ForeignKey(User,on_delete=models.CASCADE) #!false
-    pin  = models.IntegerField() 
+    pin  = models.CharField(max_length=6) 
     # total= models.GeneratedField(expression, output_field, db_persist=None, **kwargs) 
     
     def __str__(self) -> str:
