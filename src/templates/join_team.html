@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]>      <html class="no-js"> <![endif]-->
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>join team</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="">
+    </head>
+    <body>
+        <form method = "POST">
+            {% csrf_token %}
+            <hr>
+            {% for team in teams %}
+            <div>
+                <input
+                  type="radio"
+                  name="name"
+                  value="{{team.name}}" />
+                <label for="subscribeNews">{{team.name}}</label>
+              </div>
+            {% endfor %}
+            <br><hr>
+            <p>
+                <label for="id_password">Password:</label>
+                <input type="password" name="password" maxlength="128" required="" id="id_password">                  
+            </p>
+            <button type="submit">Join</button>
+            <hr>
+        </form>
+    </body>
+
+</html>

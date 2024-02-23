@@ -70,14 +70,11 @@ def create_team(request):
                 pass
             pin = random.randint(1000,999999)
             team = Team.objects.create(name=request.POST['name'],pin=int(pin))
-            print(f"============={team}======{team.id}==============")
             user_id = request.user.id
-            print(f"============={user_id}==============")
             participant = Participant.objects.get(user_id=user_id)
-            print(f"============={participant}==============")
             participant.team = team
             participant.save()
-        return HttpResponse(f"<h1>team created | your pin is {pin}</h1>",status=201)
+        return HttpResponse(f"<h1>team created | your pin is '{pin}'</h1>",status=201)
     raise  Http404()    
 
 @login_required
@@ -89,16 +86,24 @@ def join_team(request):
                 return HttpResponse("<h1>you are already in a team</h1>",status=400)
         except:
             pass
-        return render(request, 'singup.html')
+        all_teams = Team.objects.all()
+        return render(request, 'join_team.html',{"teams":all_teams})
     
     if request.method == 'POST':
         try:
             team = Team.objects.get(name=request.POST['name'])
+        except:
+            return HttpResponse("<h1>team not found</h1>",status=404)
+        
+        if team.pin == int(request.POST['password']):
+            
             user = request.user.id
             participent = Participant.objects.get(user_id=user)
             participent.team = team 
             participent.save()
             return HttpResponse("<h1>team joined</h1>",status=200)
-        except:
-            return HttpResponse("<h1>team not found</h1>",status=404)
-    raise  Http404()
+        else:
+            return HttpResponse("<h1>a wrong password</h1>",status=400)
+    
+        
+    raise Http404()
