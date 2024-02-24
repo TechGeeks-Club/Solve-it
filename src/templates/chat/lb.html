@@ -1,0 +1,43 @@
+<html>
+    <head>
+      
+    </head>
+    <body>
+        @
+        <input type="button"id="start_btn" value="test">
+        
+        <script >
+            const competitionSocket = new WebSocket(
+                'ws://'
+                + window.location.host
+                + '/ws/competition/'
+
+            )
+            document.getElementById("start_btn").addEventListener("click", function(){
+                console.log('start button clicked dfjwd')
+                competitionSocket.send(JSON.stringify({
+                    'message': 'start'
+                }))
+               
+            });
+            {% comment %} startBtn.addEventListener('click', () => {
+                console.log('start button clicked')
+                competitionSocket.send(JSON.stringify({
+                    'message': 'start'
+                }))
+            })
+            competitionSocket.onopen = (event) => {
+                console.log('WebSocket connection opened:', event);
+            };
+            
+            competitionSocket.onmessage = (event) => {
+                console.log('WebSocket message received:', event.data);
+            };
+            
+            competitionSocket.onclose = (event) => {
+                console.error('WebSocket connection closed unexpectedly:', event);
+            }; {% endcomment %}
+
+        </script>
+    </body>
+</html>

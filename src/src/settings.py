@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-0_-tb_#wg=!3q5)5(h1$czq=mp*j4+wmt9&gkj!#i!y-+_yh+p
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = [ '127.0.0.1','localhost']
+ALLOWED_HOSTS = [ '127.0.0.1','localhost', '192.168.43.80']
 
 INTERNAL_IPS = [
     # ...
@@ -78,6 +78,7 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
             ],
+            'debug': True, # disable template caching # ! (for development only)
         },
     },
 ]
@@ -173,3 +174,11 @@ CHANNEL_LAYERS = {
 #         },
 #     },
 # }
+
+
+# competition settings
+
+C9N_DURATION = 60 * 60 * 2  # 2 hours
+C9N_L8D_ROOM = "leaderboard" # room for leaderboard
+C9N_MAX_TEAM = 3 # max per team
+C9N_TEAM_B7T = "broadcast" # room for broadcasting messages
