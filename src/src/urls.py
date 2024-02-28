@@ -26,7 +26,7 @@ urlpatterns = [
     path("__debug__/", include("debug_toolbar.urls")),
     path('', include("main.urls")),
 
-    path("chat/", include("CTests.urls")),
+    path("test/", include("CTests.urls")),
     path("competition/", include("realtime.urls")),
 
     
