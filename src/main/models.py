@@ -33,21 +33,21 @@ class Team(models.Model):
 class QuestionLevel(models.Model):
     level = models.CharField(max_length=20)
     def __str__(self) -> str:
-        return self.level
+        return f"{self.level}"
     
 def upload_question_file(instance:"Question", filename):
-    return  os.path.join('questions',instance.level,instance.id,"test.c")
+    return  os.path.join('questions',instance.level,str(instance.id),"test.c")
     
 def upload_question_h_file(instance:"Question", filename):
-    return  os.path.join('questions',instance.level,instance.id,"sol.h")
+    return  os.path.join('questions',instance.level,str(instance.id),"sol.h")
     
 class Question(models.Model):
     question_title = models.CharField(max_length=255,db_default="No Title")
-    question_text  = models.TextField()
+    question_text  = models.TextField(null=True,blank=True)
     points         = models.IntegerField(db_default=0)
     template       = models.TextField() #contains the path of the template
-    test_file      = models.FileField(upload_to=upload_question_file)
-    sol_h_file     = models.FileField(upload_to=upload_question_file)
+    test_file      = models.FileField(upload_to=upload_question_file,null=True,blank=True)
+    sol_h_file     = models.FileField(upload_to=upload_question_file,null=True,blank=True)
     date           = models.DateTimeField(default = timezone.now)    
     level          = models.ForeignKey(QuestionLevel,on_delete=models.CASCADE)
     # test_num = models.GeneratedField(expression, output_field, db_persist=None, **kwargs)
@@ -55,24 +55,24 @@ class Question(models.Model):
     def __str__(self) -> str:
         return f'{self.id} - {self.level} - {self.question_title}'
 
-class Test(models.Model):
-    question = models.ForeignKey(Question, on_delete=models.CASCADE)
-    input    = models.TextField()
-    output   = models.TextField()
-    def __str__(self):
-        return f'{self.id} - {self.question} - [ {self.input} ]'
+# class Test(models.Model):
+#     question = models.ForeignKey(Question, on_delete=models.CASCADE)
+#     input    = models.TextField()
+#     output   = models.TextField()
+#     def __str__(self):
+#         return f'{self.id} - {self.question} - [ {self.input} ]'
     
     
 
 def upload_answer_to(instance, filename):
-    return  os.path.join('responses',instance.team.id,instance.question.id,filename)
+    return  os.path.join('responses',instance.team.id,instance.question.id,"sol.c")
 
 class Answer(models.Model):
     question   = models.ForeignKey(Question,on_delete=models.CASCADE)#Quetion_id
-    team       = models.ForeignKey(Team,on_delete=models.CASCADE)    #Team_id
-    answer     = models.FileField(upload_to=upload_answer_to)
-    class Meta:
-        unique_together = [['question', 'team']]
+    Participant= models.ForeignKey(Participant,on_delete=models.CASCADE,null=True)    #Team_id
+    answer     = models.FileField(upload_to=upload_answer_to,null=True,blank=True)
+    # class Meta:
+    #     unique_together = [['question', 'Participant']]
         
     def __str__(self) -> str:
         return f'{self.id} - {self.team} - {self.question}'

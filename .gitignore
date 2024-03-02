@@ -30,3 +30,5 @@ media/
 
 foobar
 channels_test
+
+*.exe

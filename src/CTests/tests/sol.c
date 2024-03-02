@@ -11,7 +11,7 @@ int maxArr(int arr[], int size){
     
 }
 
-int mains() {
+int mainn() {
     printf("======================");
     return 0;
 }

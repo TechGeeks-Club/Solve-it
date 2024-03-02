@@ -102,8 +102,12 @@
             </pre>
             <div class="submit-form">
                 <h3>Submit Your Solution</h3>
-                <form action="/submit" method="post" enctype="multipart/form-data">
-                    <input type="file" name="codeFile" class="file-input" accept=".c" required>
+                <form action="/test/uploadAnswer/" method="post" enctype="multipart/form-data">
+                    {% csrf_token %}  
+                    {{ form.as_p }}
+
+                    <input type="hidden" name="exercise" value="1">
+                    {% comment %} <input type="file" name="codeFile" class="file-input" accept=".c" required> {% endcomment %}
                     <button type="submit" class="submit-button">Submit</button>
                 </form>
             </div>
