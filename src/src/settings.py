@@ -182,3 +182,6 @@ C9N_DURATION = 60 * 60 * 2  # 2 hours
 C9N_L8D_ROOM = "leaderboard" # room for leaderboard
 C9N_MAX_TEAM = 3 # max per team
 C9N_TEAM_B7T = "broadcast" # room for broadcasting messages
+
+
+C_ENTRYPOINT = "mainSolveIt"

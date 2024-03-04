@@ -4,11 +4,12 @@ This file contains the functions that are used to compile, run, and test the cod
 
 import subprocess
 compiled_program = 'test'
+from src.settings import C_ENTRYPOINT
 
 # compile the code
 def compile_code(file_path,exec_file=compiled_program):
     try:
-        subprocess.run(['gcc', file_path, '-o', exec_file], check=True)
+        subprocess.run(['gcc','-e',C_ENTRYPOINT, file_path, '-o', exec_file], check=True)
         return True
     except subprocess.CalledProcessError as e:
         print(e.output)
