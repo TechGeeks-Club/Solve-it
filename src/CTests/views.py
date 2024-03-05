@@ -1,13 +1,22 @@
 from django.shortcuts import render
 
-# Create your views here.
-from django.shortcuts import render
-
-
+from .forms import AnswerFileForm
 def index(request):
-    return render(request, "chat/index.html")
+    return render(request, "test.html")
 
-
-def room(request, room_name):
-    print("room_name", room_name)
-    return render(request, "chat/room.html", {"room_name": room_name})
+def upload(request):
+    if request.method == 'POST':
+        if request.user.is_authenticated:
+            user = request.user
+        form = AnswerFileForm(request.POST, request.FILES)
+        if form.is_valid():
+            answer = form.save(commit=False)
+            answer.participant = user.participant
+            
+            
+            answer.save()
+            return render(request, "success.html")
+        
+    else:
+        form = AnswerFileForm()
+        return render(request, "test.html", {'form': form})

@@ -30,33 +30,3 @@ class Participant(forms.ModelForm):
         model = models.Participant
         fields = ['user', 'team']
 
-class TeamForm(forms.ModelForm):
-    class Meta:
-        model = models.Team
-        fields = ['name', 'pin']
-    
-    
-class QuetionForm(forms.ModelForm):
-    class Meta:
-        model = models.Question
-        fields = ["question_title",'question_text', 'points', 'template', 'level']
-
-class QuestionLevelForm(forms.ModelForm):
-    class Meta:
-        model = models.QuestionLevel
-        fields = ['level']
-        
-class TestFrom(forms.ModelForm):
-    class Meta:
-        model = models.Test
-        fields = ['input', 'output', 'question']
-    
-class AnswerForm(forms.ModelForm):
-    class Meta:
-        model = models.Answer
-        fields = ['question', 'team', 'answer']
-class AnswerResaultForm(forms.ModelForm):
-    class Meta:
-        model = models.AnswerResault
-        fields = ['answer', 'success', 'points']
-

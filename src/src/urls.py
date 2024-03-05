@@ -26,7 +26,8 @@ urlpatterns = [
     path("__debug__/", include("debug_toolbar.urls")),
     path('', include("main.urls")),
 
-    path("chat/", include("CTests.urls")),
+    path("test/", include("CTests.urls")),
+    path("competition/", include("realtime.urls")),
 
     
 ] + static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT) + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
