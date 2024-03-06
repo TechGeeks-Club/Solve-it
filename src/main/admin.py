@@ -28,7 +28,7 @@ class TestFileAdmin(admin.ModelAdmin):
 
 @admin.register(Question)
 class QuestionAdmin(admin.ModelAdmin):
-    list_display = ['id', 'question_title', 'points', 'level']
+    list_display = ['id', 'title', 'points', 'level']
 
 @admin.register(QuestionLevel)
 class QuestionLevelAdmin(admin.ModelAdmin):

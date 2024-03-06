@@ -53,13 +53,13 @@ class TestFile(models.Model):
 
 
 class Question(models.Model):
-    question_title = models.CharField(max_length=255,db_default="No Title")
-    question_text  = models.TextField(null=True,blank=True)
-    points         = models.IntegerField(db_default=0)
-    template       = models.TextField(null=True,blank=True) #contains the path of the template
-    date           = models.DateTimeField(default = timezone.now)    
-    level          = models.ForeignKey(QuestionLevel,on_delete=models.SET_NULL,null=True)
-    is_active      = models.BooleanField(default=True)
+    title     = models.CharField(max_length=255,db_default="No Title")
+    text      = models.TextField(null=True,blank=True)
+    points    = models.IntegerField(db_default=0)
+    template  = models.TextField(null=True,blank=True) #contains the path of the template
+    date      = models.DateTimeField(default = timezone.now)    
+    level     = models.ForeignKey(QuestionLevel,on_delete=models.SET_NULL,null=True)
+    is_active = models.BooleanField(default=True)
     # test_num = models.GeneratedField(expression, output_field, db_persist=None, **kwargs)
     
     def __str__(self) -> str:
