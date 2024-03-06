@@ -23,7 +23,7 @@ class Participant(models.Model):
 
 class Team(models.Model):
     name = models.CharField(max_length=254)
-    pin  = models.IntegerField(max_length=6) # we will make it decimal based for now 
+    pin  = models.IntegerField() # we will make it decimal based for now 
     # total= models.GeneratedField(expression, output_field, db_persist=None, **kwargs) 
     
     def __str__(self) -> str:
@@ -33,27 +33,37 @@ class Team(models.Model):
 class QuestionLevel(models.Model):
     level = models.CharField(max_length=20)
     def __str__(self) -> str:
-        return f"{self.level}"
+        return f"{self.name}"
     
-def upload_question_file(instance:"Question", filename):
-    return  os.path.join('questions',instance.level,str(instance.id),"test.c")
+def upload_question_file(instance:"TestFile", filename):
+    print("instance : " , instance)
+    return  os.path.join('questions',instance.test.level,str(instance.test.id),"test.c")
     
-def upload_question_h_file(instance:"Question", filename):
-    return  os.path.join('questions',instance.level,str(instance.id),"sol.h")
-    
+def upload_question_h_file(instance:"TestFile", filename):
+    return  os.path.join('questions',instance.test.level,str(instance.test.id),"sol.h")
+
+
+class TestFile(models.Model):
+    test     = models.OneToOneField("Question",on_delete=models.CASCADE,null=True,blank=True)
+    file     = models.FileField(upload_to=upload_question_file,null=True,blank=True)
+    header   = models.FileField(upload_to=upload_question_h_file,null=True,blank=True)
+    def __str__(self) -> str:
+        return f'{self.id} - {self.test} - {self.file}'
+
+
 class Question(models.Model):
     question_title = models.CharField(max_length=255,db_default="No Title")
     question_text  = models.TextField(null=True,blank=True)
     points         = models.IntegerField(db_default=0)
-    template       = models.TextField() #contains the path of the template
-    test_file      = models.FileField(upload_to=upload_question_file,null=True,blank=True)
-    sol_h_file     = models.FileField(upload_to=upload_question_file,null=True,blank=True)
+    template       = models.TextField(null=True,blank=True) #contains the path of the template
     date           = models.DateTimeField(default = timezone.now)    
     level          = models.ForeignKey(QuestionLevel,on_delete=models.SET_NULL,null=True)
     # test_num = models.GeneratedField(expression, output_field, db_persist=None, **kwargs)
     
     def __str__(self) -> str:
-        return f'{self.id} - {self.level} - {self.question_title}'
+        return f'/{self.id} - {self.level} - {self.question_title}/'
+    
+        
 
 # class Test(models.Model):
 #     question = models.ForeignKey(Question, on_delete=models.CASCADE)
