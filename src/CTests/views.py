@@ -1,22 +1,35 @@
 from django.shortcuts import render
+from django.http import JsonResponse
 
 from .forms import AnswerFileForm
-def index(request):
-    return render(request, "test.html")
+from main.models import Question
+# def index(request):
+#     return render(request, "test.html")
 
-def upload(request):
+def index(request):
     if request.method == 'POST':
         if request.user.is_authenticated:
             user = request.user
         form = AnswerFileForm(request.POST, request.FILES)
+        question = Question.objects.filter(id=request.POST["questionId"])
+        
+        if not question.exists():
+            return JsonResponse({"error":"Question not found"},status=400)
+        question = question.first()
+        
         if form.is_valid():
             answer = form.save(commit=False)
             answer.participant = user.participant
+            answer.question = question
+            answer.save()
+            
             
             
             answer.save()
             return render(request, "success.html")
         
-    else:
+    elif request.method == "GET":
+        # load the questions with the status
         form = AnswerFileForm()
-        return render(request, "test.html", {'form': form})
+        questions = Question.objects.filter(is_active=True)
+        return render(request, "test.html", context={'form': form,"questions":questions})

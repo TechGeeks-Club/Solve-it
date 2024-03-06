@@ -1,7 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.utils import timezone
-import os
+import os,random,string
 
 
 # DB_digrame: #? https://drawsql.app/teams/django-34/diagrams/db
@@ -19,11 +19,12 @@ class Participant(models.Model):
     user = models.OneToOneField(User,on_delete=models.CASCADE)
     team = models.ForeignKey('Team',on_delete=models.SET_NULL,null=True) #Team_id
     def __str__(self) -> str:
-        return self.user.username
+        return f"{self.user.username} ({self.team.name or 'No Team'})"
 
 class Team(models.Model):
     name = models.CharField(max_length=254)
-    pin  = models.IntegerField(max_length=6) # we will make it decimal based for now 
+    pin  = models.IntegerField() # we will make it decimal based for now 
+
     # total= models.GeneratedField(expression, output_field, db_persist=None, **kwargs) 
     
     def __str__(self) -> str:
@@ -35,25 +36,36 @@ class QuestionLevel(models.Model):
     def __str__(self) -> str:
         return f"{self.level}"
     
-def upload_question_file(instance:"Question", filename):
-    return  os.path.join('questions',instance.level,str(instance.id),"test.c")
+def upload_question_file(instance:"TestFile", filename):
+    print("instance : " , instance)
+    return  os.path.join('questions',str(instance.question.level.id),str(instance.question.id),"test.c")
     
-def upload_question_h_file(instance:"Question", filename):
-    return  os.path.join('questions',instance.level,str(instance.id),"sol.h")
-    
+def upload_question_h_file(instance:"TestFile", filename):
+    return  os.path.join('questions',str(instance.question.level.id),str(instance.question.id),"sol.h")
+
+
+class TestFile(models.Model):
+    question = models.OneToOneField("Question",on_delete=models.CASCADE,null=True,blank=True)
+    file     = models.FileField(upload_to=upload_question_file,null=True,blank=True)
+    header   = models.FileField(upload_to=upload_question_h_file,null=True,blank=True)
+    def __str__(self) -> str:
+        return f'ID: {self.id} - Q: {self.question} - PATH: {self.file}'
+
+
 class Question(models.Model):
-    question_title = models.CharField(max_length=255,db_default="No Title")
-    question_text  = models.TextField(null=True,blank=True)
-    points         = models.IntegerField(db_default=0)
-    template       = models.TextField() #contains the path of the template
-    test_file      = models.FileField(upload_to=upload_question_file,null=True,blank=True)
-    sol_h_file     = models.FileField(upload_to=upload_question_file,null=True,blank=True)
-    date           = models.DateTimeField(default = timezone.now)    
-    level          = models.ForeignKey(QuestionLevel,on_delete=models.SET_NULL,null=True)
+    title     = models.CharField(max_length=255,db_default="No Title")
+    text      = models.TextField(null=True,blank=True)
+    points    = models.IntegerField(db_default=0)
+    template  = models.TextField(null=True,blank=True) #contains the path of the template
+    date      = models.DateTimeField(default = timezone.now)    
+    level     = models.ForeignKey(QuestionLevel,on_delete=models.SET_NULL,null=True)
+    is_active = models.BooleanField(default=True)
     # test_num = models.GeneratedField(expression, output_field, db_persist=None, **kwargs)
     
     def __str__(self) -> str:
-        return f'{self.id} - {self.level} - {self.question_title}'
+        return f'id: {self.id} - lvl: {self.level} - ttl: {self.title}'
+    
+        
 
 # class Test(models.Model):
 #     question = models.ForeignKey(Question, on_delete=models.CASCADE)
@@ -65,17 +77,20 @@ class Question(models.Model):
     
 
 def upload_answer_to(instance, filename):
-    return  os.path.join('responses',instance.team.id,instance.question.id,"sol.c")
+    # ran : random string to make sure the file name is unique if the user uploads more than one answer (we will make about 3 attempts)
+    ran = ''.join(random.choices(string.ascii_uppercase + string.digits, k=4) )
+
+    return  os.path.join('responses',str(instance.participant.team.id),str(instance.question.id),ran,"sol.c")
 
 class Answer(models.Model):
     question   = models.ForeignKey(Question,on_delete=models.CASCADE)#Quetion_id
-    Participant= models.ForeignKey(Participant,on_delete=models.CASCADE,null=True)    #Team_id
+    participant= models.ForeignKey(Participant,on_delete=models.CASCADE,null=True)    #Team_id
     answer     = models.FileField(upload_to=upload_answer_to,null=True,blank=True)
     # class Meta:
     #     unique_together = [['question', 'Participant']]
         
     def __str__(self) -> str:
-        return f'{self.id} - {self.team} - {self.question}'
+        return f'{self.id} - {self.participant} - {self.question}'
 
 
 class AnswerResault(models.Model):

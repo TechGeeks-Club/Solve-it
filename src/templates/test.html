@@ -1,154 +1,46 @@
+{% load static %}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Algorithm Exercises</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
-        }
-
-        .exercise-container {
-            max-width: 800px;
-            margin: auto;
-        }
-
-        .exercise-section {
-            border: 1px solid #ccc;
-            border-radius: 8px;
-            margin-bottom: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            overflow: hidden;
-        }
-
-        .exercise-header {
-            background-color: #4CAF50;
-            color: white;
-            padding: 15px;
-            cursor: pointer;
-            user-select: none;
-        }
-
-        .exercise-content {
-            padding: 15px;
-            display: none;
-        }
-
-        .exercise-content pre {
-            border: 1px solid #ddd;
-            background-color: #f9f9f9;
-            padding: 10px;
-            margin-top: 10px;
-            border-radius: 4px;
-            font-family: "Courier New", Courier, monospace;
-        }
-
-        .code-template {
-            border: 1px solid #ddd;
-            background-color: #f9f9f9;
-            padding: 10px;
-            margin-top: 10px;
-            border-radius: 4px;
-            font-family: "Courier New", Courier, monospace;
-        }
-
-        .submit-form {
-            margin-top: 20px;
-        }
-
-        .submit-button {
-            padding: 10px;
-            background-color: #4caf50;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-
-        .submit-button:hover {
-            background-color: #45a049;
-        }
-
-        .file-input {
-            margin-top: 10px;
-        }
-    </style>
+    <link rel="stylesheet" href="{% static 'css/test_comp.css' %}">
+    
 </head>
 <body>
-
+{{ room_name|json_script:"room-name" }}
+<h1>{{request.user.participant}}</h1>
 <div class="exercise-container">
 
-    <!-- Exercise 1 -->
-    <div class="exercise-section">
-        <div class="exercise-header">Exercise 1: Fibonacci Sequence</div>
-        <div class="exercise-content">
-            <p>Implement a function in C to calculate the nth Fibonacci number. Use the template below and submit your C code file.</p>
-            <pre>
-                <code>
-                    #include &lt;stdio.h&gt;
-
-                    int fibonacci(int n) {
-                        // Your code here
-                    }
-
-                    int main() {
-                        // Test your function here
-                        printf("%d\n", fibonacci(5));
-                        return 0;
-                    }
-                </code>
-            </pre>
-            <div class="submit-form">
-                <h3>Submit Your Solution</h3>
-                <form action="/test/uploadAnswer/" method="post" enctype="multipart/form-data">
-                    {% csrf_token %}  
-                    {{ form.as_p }}
-
-                    <input type="hidden" name="exercise" value="1">
-                    {% comment %} <input type="file" name="codeFile" class="file-input" accept=".c" required> {% endcomment %}
-                    <button type="submit" class="submit-button">Submit</button>
-                </form>
+    {% for question in questions %}
+    
+        <div class="exercise-section">
+            <div class="exercise-header">{{question.points}} points : {{question.title}}</div>
+            <div class="exercise-content">
+                <p>{{question.text}}</p>
+                <pre><code>{{question.template}}</code></pre>
+                <div class="submit-form">
+                    <h3>Submit Your Solution</h3>
+                    <form action="/submit" method="post" enctype="multipart/form-data">
+                        {% csrf_token %}  
+                        {{ from.as_p }}
+                        <input type="hidden" name="question_id" value="{{question.id}}">
+                        <button type="button" class="submit-button">Submit</button>
+                    </form>
+                </div>
             </div>
         </div>
-    </div>
+    {% endfor %}
+    
 
-    <!-- Exercise 2 -->
-    <div class="exercise-section">
-        <div class="exercise-header">Exercise 2: Palindrome Check</div>
-        <div class="exercise-content">
-            <p>Implement a function in C to check if a given string is a palindrome. Use the template below and submit your C code file.</p>
-            <pre>
-                <code>
-                    #include &lt;stdio.h&gt;
-                    #include &lt;stdbool.h&gt;
-
-                    bool is_palindrome(char* s) {
-                        // Your code here
-                    }
-
-                    int main() {
-                        // Test your function here
-                        printf("%d\n", is_palindrome("radar"));
-                        return 0;
-                    }
-                </code>
-            </pre>
-            <div class="submit-form">
-                <h3>Submit Your Solution</h3>
-                <form action="/submit" method="post" enctype="multipart/form-data">
-                    <input type="file" name="codeFile" class="file-input" accept=".c" required>
-                    <button type="submit" class="submit-button">Submit</button>
-                </form>
-            </div>
-        </div>
-    </div>
-
-    <!-- Add more exercises as needed -->
 
 </div>
 
+
+
+<script src="{% static 'js/ws_conn.js' %}"></script>
 <script>
     // Add JavaScript to handle accordion behavior
     document.addEventListener("DOMContentLoaded", function () {
@@ -164,6 +56,5 @@
         });
     });
 </script>
-
 </body>
 </html>

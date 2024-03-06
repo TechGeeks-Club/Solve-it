@@ -30,3 +30,8 @@ class Participant(forms.ModelForm):
         model = models.Participant
         fields = ['user', 'team']
 
+
+class AnswerFileForm(forms.ModelForm):
+    class Meta:
+        model = models.Answer
+        fields = ['answer']

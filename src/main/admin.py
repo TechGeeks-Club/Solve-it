@@ -1,13 +1,43 @@
 from django.contrib import admin
-
-# Register your models here.
-
-from .models import *
+from .models import Participant, Team,TestFile, Question, QuestionLevel, Answer, AnswerResault
 
 
-admin.site.register(Participant)
-admin.site.register(Team)
-admin.site.register(Question)
-admin.site.register(QuestionLevel)
-admin.site.register(Answer)
-admin.site.register(AnswerResault)
+
+class ParticipantInline(admin.TabularInline):
+    model = Participant
+    extra = 1
+    max_num = 4
+    
+    
+
+
+@admin.register(Participant)
+class ParticipantAdmin(admin.ModelAdmin):
+    list_display = ['user', 'team']
+    
+
+@admin.register(Team)
+class TeamAdmin(admin.ModelAdmin):
+    list_display = ['name', 'pin']
+    inlines = [ParticipantInline]
+
+
+@admin.register(TestFile)
+class TestFileAdmin(admin.ModelAdmin):
+    list_display = ['id','question', 'file', 'header']
+
+@admin.register(Question)
+class QuestionAdmin(admin.ModelAdmin):
+    list_display = ['id', 'title', 'points', 'level']
+
+@admin.register(QuestionLevel)
+class QuestionLevelAdmin(admin.ModelAdmin):
+    list_display = ['id','level']
+
+@admin.register(Answer)
+class AnswerAdmin(admin.ModelAdmin):
+    list_display = ['id', 'question', 'participant']
+
+@admin.register(AnswerResault)
+class AnswerResaultAdmin(admin.ModelAdmin):
+    list_display = ['id', 'answer', 'success', 'points']

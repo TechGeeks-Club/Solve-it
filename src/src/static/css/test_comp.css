@@ -1,0 +1,69 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+}
+
+.exercise-container {
+    max-width: 800px;
+    margin: auto;
+}
+
+.exercise-section {
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+}
+
+.exercise-header {
+    background-color: #4CAF50;
+    color: white;
+    padding: 15px;
+    cursor: pointer;
+    user-select: none;
+}
+
+.exercise-content {
+    padding: 15px;
+    display: none;
+}
+
+.exercise-content pre {
+    border: 1px solid #ddd;
+    background-color: #f9f9f9;
+    padding: 10px;
+    margin-top: 10px;
+    border-radius: 4px;
+    font-family: "Courier New", Courier, monospace;
+}
+
+.code-template {
+    border: 1px solid #ddd;
+    background-color: #f9f9f9;
+    padding: 10px;
+    margin-top: 10px;
+    border-radius: 4px;
+    font-family: "Courier New", Courier, monospace;
+}
+
+.submit-form {
+    margin-top: 20px;
+}
+
+.submit-button {
+    padding: 10px;
+    background-color: #4caf50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.submit-button:hover {
+    background-color: #45a049;
+}
+
+.file-input {
+    margin-top: 10px;
+}
