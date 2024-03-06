@@ -6,6 +6,7 @@ from .models import Participant, Team,TestFile, Question, QuestionLevel, Answer,
 class ParticipantInline(admin.TabularInline):
     model = Participant
     extra = 1
+    max_num = 4
     
     
 

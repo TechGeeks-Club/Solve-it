@@ -33,7 +33,7 @@ class Team(models.Model):
 class QuestionLevel(models.Model):
     level = models.CharField(max_length=20)
     def __str__(self) -> str:
-        return f"{self.name}"
+        return f"{self.level}"
     
 def upload_question_file(instance:"TestFile", filename):
     print("instance : " , instance)
