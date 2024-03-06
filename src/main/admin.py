@@ -32,11 +32,11 @@ class QuestionAdmin(admin.ModelAdmin):
 
 @admin.register(QuestionLevel)
 class QuestionLevelAdmin(admin.ModelAdmin):
-    list_display = ['level']
+    list_display = ['id','level']
 
 @admin.register(Answer)
 class AnswerAdmin(admin.ModelAdmin):
-    list_display = ['id', 'question', 'Participant']
+    list_display = ['id', 'question', 'participant']
 
 @admin.register(AnswerResault)
 class AnswerResaultAdmin(admin.ModelAdmin):
