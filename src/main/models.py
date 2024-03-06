@@ -63,7 +63,7 @@ class Question(models.Model):
     # test_num = models.GeneratedField(expression, output_field, db_persist=None, **kwargs)
     
     def __str__(self) -> str:
-        return f'id: {self.id} - lvl: {self.level} - ttl: {self.question_title}'
+        return f'id: {self.id} - lvl: {self.level} - ttl: {self.title}'
     
         
 
