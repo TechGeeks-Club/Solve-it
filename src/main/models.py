@@ -37,18 +37,18 @@ class QuestionLevel(models.Model):
     
 def upload_question_file(instance:"TestFile", filename):
     print("instance : " , instance)
-    return  os.path.join('questions',instance.test.level,str(instance.test.id),"test.c")
+    return  os.path.join('questions',str(instance.question.level.id),str(instance.question.id),"test.c")
     
 def upload_question_h_file(instance:"TestFile", filename):
-    return  os.path.join('questions',instance.test.level,str(instance.test.id),"sol.h")
+    return  os.path.join('questions',str(instance.question.level.id),str(instance.question.id),"sol.h")
 
 
 class TestFile(models.Model):
-    test     = models.OneToOneField("Question",on_delete=models.CASCADE,null=True,blank=True)
+    question = models.OneToOneField("Question",on_delete=models.CASCADE,null=True,blank=True)
     file     = models.FileField(upload_to=upload_question_file,null=True,blank=True)
     header   = models.FileField(upload_to=upload_question_h_file,null=True,blank=True)
     def __str__(self) -> str:
-        return f'{self.id} - {self.test} - {self.file}'
+        return f'ID: {self.id} - Q: {self.question} - PATH: {self.file}'
 
 
 class Question(models.Model):
@@ -61,7 +61,7 @@ class Question(models.Model):
     # test_num = models.GeneratedField(expression, output_field, db_persist=None, **kwargs)
     
     def __str__(self) -> str:
-        return f'/{self.id} - {self.level} - {self.question_title}/'
+        return f'id: {self.id} - lvl: {self.level} - ttl: {self.question_title}'
     
         
 

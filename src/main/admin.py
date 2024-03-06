@@ -24,7 +24,7 @@ class TeamAdmin(admin.ModelAdmin):
 
 @admin.register(TestFile)
 class TestFileAdmin(admin.ModelAdmin):
-    list_display = ['id', 'file', 'header']
+    list_display = ['id','question', 'file', 'header']
 
 @admin.register(Question)
 class QuestionAdmin(admin.ModelAdmin):
